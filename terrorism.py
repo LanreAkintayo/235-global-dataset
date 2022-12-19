@@ -9,47 +9,50 @@ def get_sum(_list):
 
     return summation
 
-def get_id(test, index, all_tests):
-    test_sum = get_sum(test)
-    id = "No ID"
-    for each_index in range(len(all_tests)):
-        current_test = all_tests[each_index]
-        current_test_sum = get_sum(current_test)
+def get_id(feature, index, all_features):
+    feature_sum = get_sum(feature)
+    id = ""
+    for each_index in range(len(all_features)):
+        current_feature = all_features[each_index]
+        current_feature_sum = get_sum(current_feature)
 
-        if current_test_sum == test_sum and test == current_test:
+        if current_feature_sum == feature_sum and feature == current_feature:
             if index != each_index:
                 id = each_index + 1
     
     return id
 
-def display_output(all_tests, ids):
-    print("\nS/N\t\t\tTests\t\t\t\t\tSum\t\tSimilarity ID")
-    print("____________________________________________________________")
-    for index in range(len(all_tests)):
-        current_test = all_tests[index]
+def display_output(all_features, ids):
+    print("{0:10} {1:27} {2:10} {3:15} {4:15}".format("S/N", "Features", "Sum", "Similarity ID", "Duplicate"))
+    print("_________________________________________________________________________")
+    for index in range(len(all_features)):
+        current_feature = all_features[index]
         current_id = ids[index]
-        summation = get_sum(all_tests[index])
+        summation = get_sum(all_features[index])
+        duplicate = all_features.count(current_feature)
         
-        print(f" {index + 1}        {', '.join(current_test)} \t\t {summation}         {current_id} ")
-        print("____________________________________________________________")
+        print("{0:<10} {1:10} {2:10} {3:10} {4:14}".format(index + 1, ', '.join(current_feature), summation, current_id, duplicate))
+        print("_________________________________________________________________________")
 
 def main():
     file = open("terrorist.txt")
 
-    test_cases = int(file.readline())
-    all_tests = []
+    no_of_features = int(file.readline())
+    all_features = []
     ids = []
 
-    for test_case_index in range(test_cases):
-        test = file.readline().strip('\n').split(",")
-        all_tests.append(test)
+    for index in range(no_of_features):
+        feature = file.readline().strip('\n').split(",")
+        all_features.append(feature)
     
-
-    for each_index in range(len(all_tests)):
-        test = all_tests[each_index]
-        id = get_id(test, each_index, all_tests)
+     
+    for each_index in range(len(all_features)):
+        feature = all_features[each_index]
+        id = get_id(feature, each_index, all_features)
         ids.append(id)
 
-    display_output(all_tests, ids)
+    display_output(all_features, ids)
+
+    file.close()
 
 main()
